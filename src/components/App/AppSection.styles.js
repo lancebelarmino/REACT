@@ -13,27 +13,6 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  gradient1: {
-    position: 'fixed',
-    top: -518,
-    left: -462,
-    pointerEvents: 'none',
-  },
-
-  gradient2: {
-    position: 'fixed',
-    top: 127,
-    left: 160,
-    pointerEvents: 'none',
-  },
-
-  gradient3: {
-    position: 'fixed',
-    bottom: -580,
-    right: -550,
-    pointerEvents: 'none',
-  },
-
   content: {
     position: 'relative',
     zIndex: 999,

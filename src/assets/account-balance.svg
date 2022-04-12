@@ -1,0 +1,10 @@
+<svg id="account-balance" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="107.456" height="101.8" viewBox="0 0 107.456 101.8">
+  <defs>
+    <linearGradient id="linear-gradient" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9679bc"/>
+      <stop offset="1" stop-color="#eb429f"/>
+    </linearGradient>
+  </defs>
+  <path id="Path_35" data-name="Path 35" d="M104.8,27.206V14.311A11.344,11.344,0,0,0,93.489,3H14.311A11.308,11.308,0,0,0,3,14.311V93.489A11.308,11.308,0,0,0,14.311,104.8H93.489A11.344,11.344,0,0,0,104.8,93.489V80.594a11.315,11.315,0,0,0,5.656-9.728V36.933A11.315,11.315,0,0,0,104.8,27.206Zm-5.656,9.728V70.867H59.556V36.933ZM14.311,93.489V14.311H93.489V25.622H59.556A11.344,11.344,0,0,0,48.244,36.933V70.867A11.344,11.344,0,0,0,59.556,82.178H93.489V93.489Z" transform="translate(-3 -3)" fill="url(#linear-gradient)"/>
+  <circle id="Ellipse_10" data-name="Ellipse 10" cx="8.483" cy="8.483" r="8.483" transform="translate(65.039 42.417)" fill="url(#linear-gradient)"/>
+</svg>
