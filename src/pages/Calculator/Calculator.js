@@ -1,4 +1,4 @@
-import { Title, Text, Image, SimpleGrid, NumberInput } from '@mantine/core';
+import { Title, Text, Image, SimpleGrid, NumberInput, Button } from '@mantine/core';
 import Card from '../../components/Card/Card';
 import { ReactComponent as Balance } from '../../assets/calculator-balance.svg';
 import { ReactComponent as Token } from '../../assets/calculator-token.svg';
@@ -51,10 +51,18 @@ const Calculator = () => {
             <div>
               <NumberInput className={classes.inputAmount} classNames={{ input: classes.input }} placeholder="Amount" decimalSeparator="." precision={2} noClampOnBlur hideControls />
               <SimpleGrid cols={2} spacing={40} breakpoints={[{ maxWidth: 768, cols: 1 }]}>
-                <NumberInput classNames={{ input: classes.input }} placeholder="15 D" decimalSeparator="." precision={2} noClampOnBlur hideControls />
-                <NumberInput classNames={{ input: classes.input }} placeholder="60 D" decimalSeparator="." precision={2} noClampOnBlur hideControls />
-                <NumberInput classNames={{ input: classes.input }} placeholder="30 D" decimalSeparator="." precision={2} noClampOnBlur hideControls />
-                <NumberInput classNames={{ input: classes.input }} placeholder="180 D" decimalSeparator="." precision={2} noClampOnBlur hideControls />
+                <Button className={classes.btn} fullWidth>
+                  15 D
+                </Button>
+                <Button className={classes.btn} fullWidth>
+                  30 D
+                </Button>
+                <Button className={classes.btn} fullWidth>
+                  60 D
+                </Button>
+                <Button className={classes.btn} fullWidth>
+                  180 D
+                </Button>
               </SimpleGrid>
             </div>
             <div>Result</div>

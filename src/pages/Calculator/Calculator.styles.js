@@ -40,6 +40,23 @@ const useStyles = createStyles((theme) => ({
     marginBottom: 40,
   },
 
+  btn: {
+    height: 52,
+    background: 'transparent linear-gradient(117deg, #80808033 0%, #FFFFFF00 50%, #FFFFFF4D 100%) 0% 0% no-repeat padding-box',
+    backgroundImage: 'linear-gradient(to right,  #FFFFFF1F 0%, #FFFFFF3D 40%, #9679BC 100%)',
+    backgroundSize: '200% auto',
+    fontSize: theme.fontSizes.md,
+    textTransform: 'uppercase',
+    borderRadius: 12,
+    transition: theme.other.transitions.background,
+
+    '&:hover': {
+      backgroundPositionX: 'right',
+      backgroundPositionY: 'center',
+      backgroundColor: '#EB429F',
+    },
+  },
+
   gradient6: {
     position: 'fixed',
     top: 500,

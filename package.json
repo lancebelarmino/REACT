@@ -1,5 +1,6 @@
 {
   "name": "react-dashboard",
+  "homepage": "https://app.react.ac/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

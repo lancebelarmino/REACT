@@ -36,19 +36,28 @@ const useStyles = createStyles((theme) => ({
 
   btn: {
     height: 52,
-    background: 'transparent linear-gradient(292deg, #80808033 0%, #C2C2C233 100%) 0% 0% no-repeat padding-box',
+    background: 'transparent linear-gradient(117deg, #80808033 0%, #FFFFFF00 50%, #FFFFFF4D 100%) 0% 0% no-repeat padding-box',
+    backgroundImage: 'linear-gradient(to right,  #FFFFFF1F 0%, #FFFFFF3D 40%, #9679BC 100%)',
+    backgroundSize: '200% auto',
     fontSize: theme.fontSizes.md,
     textTransform: 'uppercase',
     borderRadius: 12,
     transition: theme.other.transitions.background,
 
     '&:hover': {
-      background: 'transparent linear-gradient(292deg, #EB429F 0%, #9679BC 100%) 0% 0% no-repeat padding-box',
+      backgroundPositionX: 'right',
+      backgroundPositionY: 'center',
+      backgroundColor: '#EB429F',
     },
   },
 
   btnGradient: {
-    background: 'transparent linear-gradient(292deg, #EB429F 0%, #9679BC 100%) 0% 0% no-repeat padding-box',
+    backgroundImage: 'linear-gradient(to right, #EB429F 0%, #9679BC 40%, #EB429F 100%)',
+
+    '&:hover': {
+      backgroundPositionX: 'right',
+      backgroundPositionY: 'center',
+    },
   },
 
   gradient4: {
