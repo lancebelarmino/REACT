@@ -13,9 +13,15 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  wallet: {
+    position: 'relative',
+    zIndex: 9999,
+    textAlign: 'right',
+    marginBottom: 40,
+  },
+
   content: {
     position: 'relative',
-    zIndex: 999,
     flexGrow: 1,
     padding: '40px 40px 160px 40px',
   },

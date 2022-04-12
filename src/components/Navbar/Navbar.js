@@ -16,14 +16,14 @@ import toCapitalize from '../../utils/toCapitalize';
 import useStyles from './Navbar.styles';
 
 const menu = [
-  { icon: Home, label: 'Home', link: 'http://google.com/', isExternal: true },
+  { icon: Home, label: 'Home', link: 'https://react.ac/', isExternal: true },
   { icon: Dashboard, label: 'Dashboard', link: '/dashboard' },
   { icon: Account, label: 'Account', link: '/account' },
-  { icon: Calculator, label: 'Calculator', link: '/calculator' },
-  { icon: LockedStaking, label: 'Locked Staking', link: 'http://google.com/', isExternal: true },
-  { icon: Lottery, label: 'Lottery', link: 'http://google.com/', isExternal: true },
-  { icon: Swap, label: 'Swap', link: 'http://google.com/', isExternal: true },
-  { icon: Whitepaper, label: 'Whitepaper', link: 'http://google.com/', isExternal: true },
+  { icon: Calculator, label: 'Calculator', link: '/calculator', isComingSoon: true },
+  { icon: LockedStaking, label: 'Locked Staking', link: '/locked-staking', isComingSoon: true },
+  { icon: Lottery, label: 'Lottery', link: '/lottery', isComingSoon: true },
+  { icon: Swap, label: 'Swap', link: 'https://traderjoexyz.com/trade?outputCurrency=0xd33df97747dD6bEcAD26B2e61F818c94B7588E69#/', isExternal: true },
+  { icon: Whitepaper, label: 'Whitepaper', link: 'https://rebase-aggregator-capital.gitbook.io/rebase-aggregator-capital/', isExternal: true },
 ];
 
 const linkVariant = {
@@ -81,6 +81,7 @@ const Navbar = () => {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState();
   const [opened, setOpened] = useState(false);
+  const [popoverOpened, setPopoverOpened] = useState(false);
   const [desktopOpened, setDesktopOpened] = useState(false);
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const isSmallScreen = useMediaQuery('(max-height: 656px)');
@@ -99,7 +100,8 @@ const Navbar = () => {
         }
       }}
       {...(!item.isExternal && { to: item.link })}
-      {...(item.isExternal && { href: item.link, target: '_blank', rel: 'noreferrer' })}>
+      {...(item.isExternal && { href: item.link, target: '_blank', rel: 'noreferrer' })}
+      {...(item.isComingSoon && { onMouseEnter: () => setPopoverOpened(item.label), onMouseLeave: () => setPopoverOpened(null) })}>
       <item.icon className={classes.linkIcon} />
       <AnimatePresence exitBeforeEnter>
         {desktopOpened && (
@@ -108,6 +110,7 @@ const Navbar = () => {
           </motion.span>
         )}
       </AnimatePresence>
+      {item.isComingSoon && popoverOpened === item.label && <div className={classes.popover}>Coming Soon!</div>}
     </Anchor>
   ));
 

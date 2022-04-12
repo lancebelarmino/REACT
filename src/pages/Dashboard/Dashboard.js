@@ -1,26 +1,29 @@
+import React, { useContext } from 'react';
 import { Title, Text, Image, SimpleGrid } from '@mantine/core';
+import EtherContext from '../../context/EtherContext';
 import Card from '../../components/Card/Card';
 import { ReactComponent as Price } from '../../assets/dashboard-price.svg';
 import { ReactComponent as MarketCap } from '../../assets/dashboard-market.svg';
-import { ReactComponent as Holders } from '../../assets/dashboard-holders.svg';
+// import { ReactComponent as Holders } from '../../assets/dashboard-holders.svg';
 import { ReactComponent as Rewards } from '../../assets/dashboard-rewards.svg';
 import gradient1 from '../../assets/gradient-1.png';
 import gradient2 from '../../assets/gradient-2.png';
 import gradient3 from '../../assets/gradient-3.png';
 import useStyles from './Dashboard.styles';
 
-const row1 = [
-  { icon: Price, title: 'Price', value: 0.0 },
-  { icon: MarketCap, title: 'Market Cap', value: 0.0 },
-  { icon: Holders, title: 'Holders', value: 0.0 },
-  { icon: Rewards, title: 'Total Rewards Distributed', value: 0.0 },
-];
-
 const Dashboard = () => {
+  const { dashboardData } = useContext(EtherContext);
   const { classes } = useStyles();
 
+  const row1 = [
+    { icon: Price, title: 'Price', value: dashboardData.price },
+    { icon: MarketCap, title: 'Market Cap', value: dashboardData.marketCap },
+    // { icon: Holders, title: 'Holders', value: 0.0 },
+    { icon: Rewards, title: 'Total Rewards Distributed', value: dashboardData.rewards },
+  ];
+
   const row1List = row1.map((item) => (
-    <Card className={classes.cardStat}>
+    <Card key={item.title} className={classes.cardStat}>
       <item.icon className={classes.cardStatIcon} />
       <div>
         <Title className={classes.cardStatTitle} order={5}>
@@ -33,19 +36,14 @@ const Dashboard = () => {
 
   return (
     <div>
-      <SimpleGrid
-        className={classes.row}
-        cols={4}
-        spacing={40}
-        breakpoints={[
-          { maxWidth: 1366, cols: 2 },
-          { maxWidth: 768, cols: 1 },
-        ]}>
+      <SimpleGrid className={classes.row} cols={3} spacing={40} breakpoints={[{ maxWidth: 1024, cols: 1 }]}>
         {row1List}
       </SimpleGrid>
 
       <div className={classes.row}>
-        <Card className={classes.chart}>Chart</Card>
+        <Card className={classes.chart}>
+          <iframe className={classes.dex} src="https://dexscreener.com/avalanche/0x580436ecaba01815711aa4a191c4405c73ddf829" title="dexchart"></iframe>
+        </Card>
       </div>
 
       <Image className={classes.gradient1} src={gradient1} />

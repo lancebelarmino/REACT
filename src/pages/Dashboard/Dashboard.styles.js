@@ -3,7 +3,7 @@ import { createStyles } from '@mantine/core';
 const useStyles = createStyles((theme) => ({
   row: {
     position: 'relative',
-    zIndex: 9999,
+    zIndex: 999,
 
     '&:not(:last-child)': {
       marginBottom: 40,
@@ -25,7 +25,12 @@ const useStyles = createStyles((theme) => ({
   },
 
   chart: {
-    height: 400,
+    height: 600,
+  },
+
+  dex: {
+    width: '100%',
+    height: '100%',
   },
 
   gradient1: {

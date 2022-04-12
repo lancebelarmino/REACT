@@ -112,6 +112,30 @@ const useStyles = createStyles((theme, _params, getRef) => {
       },
     },
 
+    popover: {
+      position: 'absolute',
+      top: '50%',
+      right: -160,
+      transform: 'translateY(-50%)',
+      background: theme.colors.white[0],
+      color: theme.colors.black[0],
+      padding: '8px 12px',
+      zIndex: 99999,
+
+      '&:before': {
+        position: 'absolute',
+        top: '50%',
+        left: -8,
+        transform: 'translateY(-50%)',
+        content: `''`,
+        width: 0,
+        height: 0,
+        borderTop: '8px solid transparent',
+        borderBottom: '8px solid transparent',
+        borderRight: '8px solid white',
+      },
+    },
+
     mobileNav: {
       zIndex: 9999,
       height: 97.19,
@@ -120,7 +144,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       padding: '1.5rem 0 2.5rem 0',
       background: '#FFFFFF1A 0% 0% no-repeat padding-box',
       backdropFilter: 'blur(12px)',
-      border: '2px solid rgba(194, 194, 194, .2);',
+      border: '2px solid rgba(194, 194, 194, .2)',
       borderRadius: '0px 0px 12px 12px',
       transition: 'height 800ms ease, max-height 800ms ease',
     },
