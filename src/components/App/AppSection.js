@@ -1,4 +1,4 @@
-import { Image, Anchor } from '@mantine/core';
+import { Anchor } from '@mantine/core';
 import Navbar from '../Navbar/Navbar';
 import useStyles from './AppSection.styles';
 import { ReactComponent as Twitter } from '../../assets/social-twitter.svg';

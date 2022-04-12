@@ -39,6 +39,7 @@ const useStyles = createStyles((theme) => ({
     background: 'transparent linear-gradient(292deg, #80808033 0%, #C2C2C233 100%) 0% 0% no-repeat padding-box',
     fontSize: theme.fontSizes.md,
     textTransform: 'uppercase',
+    borderRadius: 12,
     transition: theme.other.transitions.background,
 
     '&:hover': {
@@ -50,24 +51,17 @@ const useStyles = createStyles((theme) => ({
     background: 'transparent linear-gradient(292deg, #EB429F 0%, #9679BC 100%) 0% 0% no-repeat padding-box',
   },
 
-  gradient1: {
+  gradient4: {
     position: 'fixed',
-    top: -518,
-    left: -462,
+    top: 50,
+    right: 50,
     pointerEvents: 'none',
   },
 
-  gradient2: {
+  gradient5: {
     position: 'fixed',
-    top: 127,
-    left: 160,
-    pointerEvents: 'none',
-  },
-
-  gradient3: {
-    position: 'fixed',
-    bottom: -580,
-    right: -550,
+    bottom: -370,
+    left: -344,
     pointerEvents: 'none',
   },
 }));

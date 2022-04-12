@@ -11,11 +11,13 @@ const useStyles = createStyles((theme, _params, getRef) => {
     nav: {
       position: 'sticky',
       top: 0,
+      zIndex: 9999,
       width: '320px !important',
       maxWidth: '320px !important',
       minWidth: '0 !important',
       padding: '2.5rem !important',
       background: 'transparent linear-gradient(163deg, #80808033 0%, #FFFFFF00 50%, #FFFFFF4D 100%) 0% 0% no-repeat padding-box',
+      backdropFilter: 'blur(12px)',
       border: '1px solid #C2C2C233',
       height: '100vh',
       transition: 'max-width 500ms ease',
@@ -111,14 +113,16 @@ const useStyles = createStyles((theme, _params, getRef) => {
     },
 
     mobileNav: {
+      zIndex: 9999,
       height: 97.19,
       maxHeight: 97.19,
       minHeight: '0 !important',
       padding: '1.5rem 0 2.5rem 0',
+      background: '#FFFFFF1A 0% 0% no-repeat padding-box',
+      backdropFilter: 'blur(12px)',
       border: '2px solid rgba(194, 194, 194, .2);',
       borderRadius: '0px 0px 12px 12px',
       transition: 'height 800ms ease, max-height 800ms ease',
-      background: '#FFFFFF1A 0% 0% no-repeat padding-box',
     },
 
     mobileNavOpened: {

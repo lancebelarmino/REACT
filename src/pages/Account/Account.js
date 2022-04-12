@@ -6,6 +6,8 @@ import { ReactComponent as Rewards } from '../../assets/account-rewards.svg';
 import avalanche from '../../assets/account-avalanche.png';
 import oto from '../../assets/account-oto.png';
 import react from '../../assets/account-react.png';
+import gradient4 from '../../assets/gradient-4.png';
+import gradient5 from '../../assets/gradient-5.png';
 import useStyles from './Account.styles';
 
 const row2 = [
@@ -76,6 +78,9 @@ const Account = () => {
           </Card>
         </SimpleGrid>
       </div>
+
+      <Image className={classes.gradient4} src={gradient4} />
+      <Image className={classes.gradient5} src={gradient5} />
     </div>
   );
 };
