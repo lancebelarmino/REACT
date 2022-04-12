@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="72" height="72" viewBox="0 0 72 72">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.398" y1="0.048" x2="0.89" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9679bc"/>
+      <stop offset="1" stop-color="#eb429f"/>
+    </linearGradient>
+  </defs>
+  <g id="social-telegram" transform="translate(-1273 -967)">
+    <g id="Ellipse_8" data-name="Ellipse 8" transform="translate(1273 967)" fill="none" stroke="#7b2353" stroke-width="3">
+      <circle cx="36" cy="36" r="36" stroke="none"/>
+      <circle cx="36" cy="36" r="34.5" fill="none"/>
+    </g>
+    <path id="social-telegram-2" data-name="social-telegram" d="M38.065,67.313,32.306,94.468c-.434,1.917-1.567,2.394-3.177,1.491l-8.773-6.465-4.233,4.072a2.2,2.2,0,0,1-1.763.86l.63-8.935L31.25,70.8c.707-.63-.153-.98-1.1-.349L10.049,83.1,1.395,80.4c-1.882-.588-1.917-1.882.392-2.785L35.637,64.57C37.2,63.982,38.576,64.919,38.065,67.313Z" transform="translate(1287.983 922.601)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

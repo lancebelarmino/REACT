@@ -1,0 +1,10 @@
+<svg id="nav-swap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37.671" height="36.012" viewBox="0 0 37.671 36.012">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.093" x2="0.853" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9679bc"/>
+      <stop offset="1" stop-color="#eb429f"/>
+    </linearGradient>
+  </defs>
+  <path id="Path_13" data-name="Path 13" d="M0,0H37.671V36.012H0Z" fill="none"/>
+  <path id="Path_14" data-name="Path 14" d="M17.7,2C9.032,2,2,8.722,2,17s7.032,15,15.7,15,15.7-6.722,15.7-15S26.36,2,17.7,2Zm0,27.009c-6.922,0-12.557-5.387-12.557-12S10.774,5,17.7,5s12.557,5.387,12.557,12S24.618,29.009,17.7,29.009ZM22.4,8.752V12.5H16.126v3H22.4v3.751L27.9,14Zm-9.418,6L7.494,20.006l5.494,5.252V21.506h6.278v-3H12.987Z" transform="translate(1.139 1.001)" fill="url(#linear-gradient)"/>
+</svg>

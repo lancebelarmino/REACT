@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="72" height="72" viewBox="0 0 72 72">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.255" y1="-0.159" x2="0.827" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9679bc"/>
+      <stop offset="1" stop-color="#eb429f"/>
+    </linearGradient>
+  </defs>
+  <g id="social-twitter" transform="translate(-1039 -967)">
+    <g id="Ellipse_9" data-name="Ellipse 9" transform="translate(1039 967)" fill="none" stroke="#7b2353" stroke-width="3">
+      <circle cx="36" cy="36" r="36" stroke="none"/>
+      <circle cx="36" cy="36" r="34.5" fill="none"/>
+    </g>
+    <path id="social-twitter-2" data-name="social-twitter" d="M39.121,14.114a13.428,13.428,0,0,1-4.189,1.272,8,8,0,0,0,3.207-4.47,13.772,13.772,0,0,1-4.631,1.962,6.974,6.974,0,0,0-5.323-2.551c-4.027,0-7.292,3.617-7.292,8.079a8.922,8.922,0,0,0,.189,1.841A20.118,20.118,0,0,1,6.049,11.8a8.71,8.71,0,0,0-.987,4.062,8.334,8.334,0,0,0,3.244,6.724A6.743,6.743,0,0,1,5,21.58c0,.034,0,.068,0,.1A7.924,7.924,0,0,0,10.853,29.6a6.665,6.665,0,0,1-1.922.283,6.546,6.546,0,0,1-1.372-.145,7.439,7.439,0,0,0,6.812,5.61A13.756,13.756,0,0,1,5.314,38.81a13.328,13.328,0,0,1-1.74-.113,19.21,19.21,0,0,0,11.179,3.63c13.415,0,20.75-12.31,20.75-22.985q0-.525-.02-1.046A15.753,15.753,0,0,0,39.121,14.114Z" transform="translate(1053.426 976.674)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
