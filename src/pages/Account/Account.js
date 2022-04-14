@@ -58,6 +58,7 @@ const Account = () => {
     <div>
       <AnimatePresence exitBeforeEnter>
         {claimStatus === 'success' && <Notification icon={Success} title="Claim Successful" description="You claimed AVAX tokens." onClose={() => setClaimStatus(null)} />}
+        {claimStatus === 'error' && <Notification icon={Error} title="Claim Failed" description="Unable to claim AVAX tokens." onClose={() => setClaimStatus(null)} />}
         {compoundStatus === 'success' && <Notification icon={Success} title="Compound Successful" description="You've received REACT Tokens." onClose={() => setCompoundStatus(null)} />}
         {compoundStatus === 'error' && <Notification icon={Error} title="Compound Failed" description="No rewards to compound." onClose={() => setCompoundStatus(null)} />}
       </AnimatePresence>
