@@ -82,7 +82,7 @@ const Navbar = () => {
   const [active, setActive] = useState();
   const [opened, setOpened] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const [desktopOpened, setDesktopOpened] = useState(false);
+  const [desktopOpened, setDesktopOpened] = useState(true);
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const isSmallScreen = useMediaQuery('(max-height: 656px)');
 

@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Title, Text, Image, SimpleGrid, Button } from '@mantine/core';
 import EtherContext from '../../context/EtherContext';
+import SuccessNotification from '../../components/Feedback/SuccessNotification';
 import Card from '../../components/Card/Card';
 import { ReactComponent as Wallet } from '../../assets/account-balance.svg';
 import { ReactComponent as Gains } from '../../assets/account-gains.svg';
@@ -13,7 +14,7 @@ import gradient5 from '../../assets/gradient-5.png';
 import useStyles from './Account.styles';
 
 const Account = () => {
-  const { walletData, claimPendingRewards, compoundDividends } = useContext(EtherContext);
+  const { walletData, claimPendingRewards, compoundDividends, claimSuccess, setClaimSuccess, compoundSuccess, setCompoundSuccess } = useContext(EtherContext);
   const { classes } = useStyles();
 
   const row2 = [
@@ -36,8 +37,24 @@ const Account = () => {
     </Card>
   ));
 
+  useEffect(() => {
+    if (claimSuccess || compoundSuccess) {
+      let screenTimer = setTimeout(() => {
+        setClaimSuccess(false);
+        setCompoundSuccess(false);
+      }, 2000);
+
+      return () => {
+        clearTimeout(screenTimer);
+      };
+    }
+  }, [claimSuccess, setClaimSuccess, compoundSuccess, setCompoundSuccess]);
+
   return (
     <div>
+      {claimSuccess && <SuccessNotification title="Claim Successful" description="You claimed AVAX tokens." onClose={() => setClaimSuccess(false)} />}
+      {compoundSuccess && <SuccessNotification title="Compound Successful" description="You've received REACT Tokens." onClose={() => setCompoundSuccess(false)} />}
+
       <div className={classes.row}>
         <Card className={classes.cardStat}>
           <Wallet className={classes.cardStatIcon} />

@@ -29,6 +29,8 @@ export const EtherContextProvider = ({ children }) => {
     return stickyValue !== null ? JSON.parse(stickyValue) : null;
   });
   const [walletData, setWalletData] = useState(defaultWalletData);
+  const [claimSuccess, setClaimSuccess] = useState(false);
+  const [compoundSuccess, setCompoundSuccess] = useState(false);
 
   const avaxProvider = useMemo(() => new ethers.providers.getDefaultProvider('https://api.avax.network/ext/bc/C/rpc'), []);
   const reactContract = useMemo(() => new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, avaxProvider), [avaxProvider]);
@@ -74,7 +76,7 @@ export const EtherContextProvider = ({ children }) => {
 
       let marketCap = tokenFormatEther(totalSupply) * reactPrice;
 
-      return marketCap.toFixed(2);
+      return marketCap.toFixed(3);
     },
     [reactContract]
   );
@@ -94,7 +96,7 @@ export const EtherContextProvider = ({ children }) => {
 
       const balance = await reactContract.balanceOf(address);
 
-      return tokenFormatEther(balance);
+      return parseFloat(tokenFormatEther(balance)).toFixed(5);
     },
     [reactContract]
   );
@@ -104,7 +106,7 @@ export const EtherContextProvider = ({ children }) => {
       const realizeGains = await reactContract.getUserRealizedGains(address);
       const gains = tokenFormatEther(realizeGains);
 
-      return parseFloat(gains).toFixed(2);
+      return parseFloat(gains).toFixed(3);
     },
     [reactContract]
   );
@@ -114,7 +116,7 @@ export const EtherContextProvider = ({ children }) => {
       const unpaidEarnings = await reactContract.getUserUnpaidEarnings(address);
       const rewards = tokenFormatEther(unpaidEarnings);
 
-      return parseFloat(rewards).toFixed(2);
+      return parseFloat(rewards).toFixed(3);
     },
     [reactContract]
   );
@@ -129,21 +131,27 @@ export const EtherContextProvider = ({ children }) => {
   const claimPendingRewards = async () => {
     try {
       let signer = await procMetamask();
-      const contract = new ethers.Contract('0xF1bFB2277C269DC90D8726DDf60A680aeffA2AbF', reactAbi, signer);
-      signer.signMessage('Claim Pending Rewards!');
-      await contract.claimPendingRewards();
-      calculateWallet();
-      // Add success state
-      console.log('Success');
+      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, signer);
+      await react.claimPendingRewards();
+
+      setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0 }));
+      setClaimSuccess(true);
     } catch (error) {
       console.log(error);
     }
   };
 
   const compoundDividends = async () => {
-    let signer = await procMetamask();
-    signer.signMessage('Compound Dividend!');
-    await reactContract.compoundDividends();
+    try {
+      let signer = await procMetamask();
+      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, signer);
+      await react.compoundDividends();
+
+      setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0 }));
+      setCompoundSuccess(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // const lockTokens = async (amount, days) => {
@@ -171,14 +179,12 @@ export const EtherContextProvider = ({ children }) => {
   };
 
   const calculateWallet = useCallback(async () => {
-    console.log('Calculating');
-
     const balance = await getAccountBalance(user);
-    const balanceInUsd = (balance * dashboardData.price).toFixed(2);
+    const balanceInUsd = (balance * dashboardData.price).toFixed(3);
     const gains = await getUserRealizedGains(user);
-    const gainsInUsd = (gains * dashboardData.avaxPrice).toFixed(2);
+    const gainsInUsd = (gains * dashboardData.avaxPrice).toFixed(3);
     const rewards = await getPendingRewards(user);
-    const rewardsInUsd = (rewards * dashboardData.avaxPrice).toFixed(2);
+    const rewardsInUsd = (rewards * dashboardData.avaxPrice).toFixed(3);
 
     setWalletData({
       balance,
@@ -211,7 +217,11 @@ export const EtherContextProvider = ({ children }) => {
     }
   }, [user, calculateWallet]);
 
-  return <EtherContext.Provider value={{ dashboardData, walletData, connectWallet, user, claimPendingRewards, compoundDividends }}>{children}</EtherContext.Provider>;
+  return (
+    <EtherContext.Provider value={{ dashboardData, walletData, connectWallet, user, claimPendingRewards, compoundDividends, claimSuccess, setClaimSuccess, compoundSuccess, setCompoundSuccess }}>
+      {children}
+    </EtherContext.Provider>
+  );
 };
 
 export default EtherContext;
