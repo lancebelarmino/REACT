@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ethers } from 'ethers';
 import reactAbi from '../utils/rebaseAggregatorAbi.json';
 import wavaxAbi from '../utils/wavaxAbi.json';
@@ -29,8 +30,11 @@ export const EtherContextProvider = ({ children }) => {
     return stickyValue !== null ? JSON.parse(stickyValue) : null;
   });
   const [walletData, setWalletData] = useState(defaultWalletData);
-  const [claimSuccess, setClaimSuccess] = useState(false);
-  const [compoundSuccess, setCompoundSuccess] = useState(false);
+  const [claimStatus, setClaimStatus] = useState(null);
+  const [compoundStatus, setCompoundStatus] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const location = useLocation();
 
   const avaxProvider = useMemo(() => new ethers.providers.getDefaultProvider('https://api.avax.network/ext/bc/C/rpc'), []);
   const reactContract = useMemo(() => new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, avaxProvider), [avaxProvider]);
@@ -135,9 +139,9 @@ export const EtherContextProvider = ({ children }) => {
       await react.claimPendingRewards();
 
       setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0 }));
-      setClaimSuccess(true);
+      setClaimStatus('success');
     } catch (error) {
-      console.log(error);
+      setClaimStatus('error');
     }
   };
 
@@ -148,9 +152,11 @@ export const EtherContextProvider = ({ children }) => {
       await react.compoundDividends();
 
       setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0 }));
-      setCompoundSuccess(true);
+      setCompoundStatus('success');
     } catch (error) {
-      console.log(error);
+      if (error.data.code === 3) {
+        setCompoundStatus('error');
+      }
     }
   };
 
@@ -205,9 +211,11 @@ export const EtherContextProvider = ({ children }) => {
     const rewards = await getTotalRewardsDistributed();
 
     setDashboardData({ avaxPrice, price: reactPrice, marketCap, rewards });
+    setIsLoading(false);
   }, [getAvaxPrice, getLPBalance, getTokenPrice, getMarketCap, getTotalRewardsDistributed]);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData();
   }, [fetchData]);
 
@@ -215,10 +223,25 @@ export const EtherContextProvider = ({ children }) => {
     if (user) {
       calculateWallet();
     }
-  }, [user, calculateWallet]);
+  }, [user, location.pathname, calculateWallet]);
 
   return (
-    <EtherContext.Provider value={{ dashboardData, walletData, connectWallet, user, claimPendingRewards, compoundDividends, claimSuccess, setClaimSuccess, compoundSuccess, setCompoundSuccess }}>
+    <EtherContext.Provider
+      value={{
+        dashboardData,
+        walletData,
+        connectWallet,
+        calculateWallet,
+        user,
+        claimPendingRewards,
+        compoundDividends,
+        claimStatus,
+        setClaimStatus,
+        compoundStatus,
+        setCompoundStatus,
+        isLoading,
+        setIsLoading,
+      }}>
       {children}
     </EtherContext.Provider>
   );

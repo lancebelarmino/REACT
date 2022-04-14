@@ -119,7 +119,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       transform: 'translateY(-50%)',
       background: theme.colors.white[0],
       color: theme.colors.black[0],
-      padding: '8px 12px',
+      padding: '0.5rem 0.75rem',
       zIndex: 99999,
 
       '&:before': {
@@ -181,7 +181,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       zIndex: 9999,
       display: 'grid',
       gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '24px 40px',
+      gap: '1.5rem 2.5rem',
       width: '100%',
 
       '@media (max-height: 656px)': {

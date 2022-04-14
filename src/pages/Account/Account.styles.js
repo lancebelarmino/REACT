@@ -10,6 +10,10 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  notif: {
+    background: 'red',
+  },
+
   cardStat: {
     display: 'flex',
     alignItems: 'center',

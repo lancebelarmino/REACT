@@ -7,7 +7,7 @@ const useStyles = createStyles((theme) => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     zIndex: 9999,
-    padding: '40px 72px',
+    padding: '2.5rem 4.5rem',
     background: theme.colors.black[0],
     boxShadow: '0px 4px 20px 4px rgba(23, 23, 23, 0.6)',
     borderRadius: '12px',

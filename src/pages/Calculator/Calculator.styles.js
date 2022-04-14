@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   input: {
-    padding: '24px 20px',
+    padding: '1.5rem 1.25rem',
     border: '0.5px solid #C2C2C233',
     background: 'transparent linear-gradient(97deg, #C2C2C233 0%, #80808033 100%) 0% 0% no-repeat padding-box',
     color: theme.colors.white[0],

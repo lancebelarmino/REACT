@@ -4,7 +4,6 @@ const useStyles = createStyles((theme) => ({
   row: {
     position: 'relative',
     zIndex: 999,
-
     '&:not(:last-child)': {
       marginBottom: 40,
     },

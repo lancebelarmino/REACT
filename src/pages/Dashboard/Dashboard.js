@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
-import { Title, Text, Image, SimpleGrid } from '@mantine/core';
 import EtherContext from '../../context/EtherContext';
+import { Title, Text, Image, SimpleGrid } from '@mantine/core';
+import { motion } from 'framer-motion';
+import { contentVariant, imageVariant } from '../../utils/framer-variants';
 import Card from '../../components/Card/Card';
 import { ReactComponent as Price } from '../../assets/dashboard-price.svg';
 import { ReactComponent as MarketCap } from '../../assets/dashboard-market.svg';
@@ -36,19 +38,21 @@ const Dashboard = () => {
 
   return (
     <div>
-      <SimpleGrid className={classes.row} cols={3} spacing={40} breakpoints={[{ maxWidth: 1024, cols: 1 }]}>
-        {row1List}
-      </SimpleGrid>
+      <motion.div className={classes.row} variants={contentVariant} custom={1}>
+        <SimpleGrid cols={3} spacing={40} breakpoints={[{ maxWidth: 1024, cols: 1 }]}>
+          {row1List}
+        </SimpleGrid>
+      </motion.div>
 
-      <div className={classes.row}>
+      <motion.div className={classes.row} variants={contentVariant} custom={2}>
         <Card className={classes.chart}>
           <iframe className={classes.dex} src="https://dexscreener.com/avalanche/0x580436ecaba01815711aa4a191c4405c73ddf829" title="dexchart"></iframe>
         </Card>
-      </div>
+      </motion.div>
 
-      <Image className={classes.gradient1} src={gradient1} />
-      <Image className={classes.gradient2} src={gradient2} />
-      <Image className={classes.gradient3} src={gradient3} />
+      <Image className={classes.gradient1} src={gradient1} component={motion.div} variants={imageVariant} />
+      <Image className={classes.gradient2} src={gradient2} component={motion.div} variants={imageVariant} />
+      <Image className={classes.gradient3} src={gradient3} component={motion.div} variants={imageVariant} />
     </div>
   );
 };

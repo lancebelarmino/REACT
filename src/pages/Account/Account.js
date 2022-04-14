@@ -1,8 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { Title, Text, Image, SimpleGrid, Button } from '@mantine/core';
 import EtherContext from '../../context/EtherContext';
-import SuccessNotification from '../../components/Feedback/SuccessNotification';
+import { Title, Text, Image, SimpleGrid, Button } from '@mantine/core';
+import { motion, AnimatePresence } from 'framer-motion';
+import { contentVariant, imageVariant } from '../../utils/framer-variants';
+import Notification from '../../components/Feedback/Notification';
 import Card from '../../components/Card/Card';
+import { ReactComponent as Success } from '../../assets/notif-success.svg';
+import { ReactComponent as Error } from '../../assets/notif-error.svg';
 import { ReactComponent as Wallet } from '../../assets/account-balance.svg';
 import { ReactComponent as Gains } from '../../assets/account-gains.svg';
 import { ReactComponent as Rewards } from '../../assets/account-rewards.svg';
@@ -14,7 +18,7 @@ import gradient5 from '../../assets/gradient-5.png';
 import useStyles from './Account.styles';
 
 const Account = () => {
-  const { walletData, claimPendingRewards, compoundDividends, claimSuccess, setClaimSuccess, compoundSuccess, setCompoundSuccess } = useContext(EtherContext);
+  const { walletData, claimPendingRewards, compoundDividends, claimStatus, setClaimStatus, compoundStatus, setCompoundStatus } = useContext(EtherContext);
   const { classes } = useStyles();
 
   const row2 = [
@@ -38,24 +42,27 @@ const Account = () => {
   ));
 
   useEffect(() => {
-    if (claimSuccess || compoundSuccess) {
+    if (claimStatus || compoundStatus) {
       let screenTimer = setTimeout(() => {
-        setClaimSuccess(false);
-        setCompoundSuccess(false);
-      }, 2000);
+        setClaimStatus(null);
+        setCompoundStatus(null);
+      }, 1500);
 
       return () => {
         clearTimeout(screenTimer);
       };
     }
-  }, [claimSuccess, setClaimSuccess, compoundSuccess, setCompoundSuccess]);
+  }, [claimStatus, setClaimStatus, compoundStatus, setCompoundStatus]);
 
   return (
     <div>
-      {claimSuccess && <SuccessNotification title="Claim Successful" description="You claimed AVAX tokens." onClose={() => setClaimSuccess(false)} />}
-      {compoundSuccess && <SuccessNotification title="Compound Successful" description="You've received REACT Tokens." onClose={() => setCompoundSuccess(false)} />}
+      <AnimatePresence exitBeforeEnter>
+        {claimStatus === 'success' && <Notification icon={Success} title="Claim Successful" description="You claimed AVAX tokens." onClose={() => setClaimStatus(null)} />}
+        {compoundStatus === 'success' && <Notification icon={Success} title="Compound Successful" description="You've received REACT Tokens." onClose={() => setCompoundStatus(null)} />}
+        {compoundStatus === 'error' && <Notification icon={Error} title="Compound Failed" description="No rewards to compound." onClose={() => setCompoundStatus(null)} />}
+      </AnimatePresence>
 
-      <div className={classes.row}>
+      <motion.div className={classes.row} variants={contentVariant} custom={1}>
         <Card className={classes.cardStat}>
           <Wallet className={classes.cardStatIcon} />
           <div>
@@ -68,15 +75,15 @@ const Account = () => {
             <Text size="md">$ {walletData.balanceInUsd}</Text>
           </div>
         </Card>
-      </div>
+      </motion.div>
 
-      <div className={classes.row}>
+      <motion.div className={classes.row} variants={contentVariant} custom={2}>
         <SimpleGrid className={classes.row} cols={2} spacing={40} breakpoints={[{ maxWidth: 768, cols: 1 }]}>
           {row2List}
         </SimpleGrid>
-      </div>
+      </motion.div>
 
-      <div className={classes.row}>
+      <motion.div className={classes.row} variants={contentVariant} custom={3}>
         <SimpleGrid className={classes.row} cols={2} spacing={40} breakpoints={[{ maxWidth: 768, cols: 1 }]}>
           <Card>
             <Image className={classes.cardActionImage} src={avalanche} width={60} height={60} />
@@ -97,10 +104,10 @@ const Account = () => {
             </Button>
           </Card>
         </SimpleGrid>
-      </div>
+      </motion.div>
 
-      <Image className={classes.gradient4} src={gradient4} />
-      <Image className={classes.gradient5} src={gradient5} />
+      <Image className={classes.gradient4} src={gradient4} component={motion.div} variants={imageVariant} />
+      <Image className={classes.gradient5} src={gradient5} component={motion.div} variants={imageVariant} />
     </div>
   );
 };
