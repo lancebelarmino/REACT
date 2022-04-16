@@ -21,6 +21,8 @@ const defaultWalletData = {
   gainsInUsd: 0,
   rewards: 0,
   rewardsInUsd: 0,
+  isClaimed: false,
+  isCompounded: false,
 };
 
 export const EtherContextProvider = ({ children }) => {
@@ -29,9 +31,8 @@ export const EtherContextProvider = ({ children }) => {
     const stickyValue = sessionStorage.getItem('user');
     return stickyValue !== null ? JSON.parse(stickyValue) : null;
   });
+  const [error, setError] = useState(null);
   const [walletData, setWalletData] = useState(defaultWalletData);
-  const [claimStatus, setClaimStatus] = useState(null);
-  const [compoundStatus, setCompoundStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const location = useLocation();
@@ -129,34 +130,56 @@ export const EtherContextProvider = ({ children }) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
     await provider.send('eth_requestAccounts', []);
     const signer = provider.getSigner();
-    return signer;
+    const network = await provider.getNetwork();
+    const networkId = network.chainId;
+
+    return { signer, networkId };
   };
 
   const claimPendingRewards = async () => {
     try {
-      let signer = await procMetamask();
-      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, signer);
+      let metamask = await procMetamask();
+
+      if (metamask.networkId !== 43114) {
+        const error = { id: 'network', error: 'Not in correct network' };
+        throw error;
+      }
+
+      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, metamask.signer);
       await react.claimPendingRewards();
 
-      setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0 }));
-      setClaimStatus('success');
+      setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0, isClaimed: true }));
     } catch (error) {
-      setClaimStatus('error');
+      if (error.id === 'network') {
+        setError({ title: 'Wrong Network', description: error.error });
+        return;
+      }
+      setError({ title: 'Claim Failed', description: 'Unable to claim AVAX tokens.' });
     }
   };
 
   const compoundDividends = async () => {
     try {
-      let signer = await procMetamask();
-      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, signer);
+      let metamask = await procMetamask();
+
+      if (metamask.networkId !== 43114) {
+        const error = { id: 'network', error: 'Not in correct network' };
+        throw error;
+      }
+
+      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, metamask.signer);
       await react.compoundDividends();
 
-      setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0 }));
-      setCompoundStatus('success');
+      setWalletData((prevData) => ({ ...prevData, rewards: 0, rewardsInUsd: 0, isCompounded: true }));
     } catch (error) {
-      if (error.data.code === 3) {
-        setCompoundStatus('error');
+      if (error.id === 'network') {
+        setError({ title: 'Wrong Network', description: error.error });
+        return;
+      } else if (error.data.code === 3) {
+        setError({ title: 'Compound Failed', description: 'No rewards to compound.' });
+        return;
       }
+      setError({ title: 'Compound Failed', description: 'Unable to compound AVAX tokens.' });
     }
   };
 
@@ -192,14 +215,14 @@ export const EtherContextProvider = ({ children }) => {
     const rewards = await getPendingRewards(user);
     const rewardsInUsd = (rewards * dashboardData.avaxPrice).toFixed(3);
 
-    setWalletData({
+    setWalletData((prevData) => ({
       balance,
       balanceInUsd,
       gains,
       gainsInUsd,
       rewards,
       rewardsInUsd,
-    });
+    }));
   }, [getAccountBalance, getUserRealizedGains, getPendingRewards, user, dashboardData.price, dashboardData.avaxPrice]);
 
   // On page load
@@ -230,17 +253,16 @@ export const EtherContextProvider = ({ children }) => {
       value={{
         dashboardData,
         walletData,
+        setWalletData,
         connectWallet,
         calculateWallet,
         user,
         claimPendingRewards,
         compoundDividends,
-        claimStatus,
-        setClaimStatus,
-        compoundStatus,
-        setCompoundStatus,
         isLoading,
         setIsLoading,
+        error,
+        setError,
       }}>
       {children}
     </EtherContext.Provider>

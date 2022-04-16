@@ -18,7 +18,7 @@ import gradient5 from '../../assets/gradient-5.png';
 import useStyles from './Account.styles';
 
 const Account = () => {
-  const { walletData, claimPendingRewards, compoundDividends, claimStatus, setClaimStatus, compoundStatus, setCompoundStatus } = useContext(EtherContext);
+  const { walletData, setWalletData, claimPendingRewards, compoundDividends, error, setError } = useContext(EtherContext);
   const { classes } = useStyles();
 
   const row2 = [
@@ -42,25 +42,51 @@ const Account = () => {
   ));
 
   useEffect(() => {
-    if (claimStatus || compoundStatus) {
+    if (walletData.isClaimed || walletData.isCompounded) {
       let screenTimer = setTimeout(() => {
-        setClaimStatus(null);
-        setCompoundStatus(null);
+        setWalletData((prevData) => ({ ...prevData, isClaimed: false, isCompounded: false }));
       }, 1500);
 
       return () => {
         clearTimeout(screenTimer);
       };
     }
-  }, [claimStatus, setClaimStatus, compoundStatus, setCompoundStatus]);
+  }, [walletData.isClaimed, walletData.isCompounded, setWalletData]);
+
+  useEffect(() => {
+    if (error) {
+      let screenTimer = setTimeout(() => {
+        setError(null);
+      }, 1500);
+
+      return () => {
+        clearTimeout(screenTimer);
+      };
+    }
+  }, [error, setError]);
 
   return (
     <div>
       <AnimatePresence exitBeforeEnter>
-        {claimStatus === 'success' && <Notification icon={Success} title="Claim Successful" description="You claimed AVAX tokens." onClose={() => setClaimStatus(null)} />}
-        {claimStatus === 'error' && <Notification icon={Error} title="Claim Failed" description="Unable to claim AVAX tokens." onClose={() => setClaimStatus(null)} />}
-        {compoundStatus === 'success' && <Notification icon={Success} title="Compound Successful" description="You've received REACT Tokens." onClose={() => setCompoundStatus(null)} />}
-        {compoundStatus === 'error' && <Notification icon={Error} title="Compound Failed" description="No rewards to compound." onClose={() => setCompoundStatus(null)} />}
+        {walletData.isClaimed && (
+          <Notification
+            key="claim-success"
+            icon={Success}
+            title="Claim Successful"
+            description="You claimed AVAX tokens."
+            onClose={() => setWalletData((prevData) => ({ ...prevData, isClaimed: false }))}
+          />
+        )}
+        {walletData.isCompounded && (
+          <Notification
+            key="compound-success"
+            icon={Success}
+            title="Compound Successful"
+            description="You've received REACT Tokens."
+            onClose={() => setWalletData((prevData) => ({ ...prevData, isCompounded: false }))}
+          />
+        )}
+        {error && <Notification key="error" icon={Error} title={error.title} description={error.description} onClose={() => setError(null)} />}
       </AnimatePresence>
 
       <motion.div className={classes.row} variants={contentVariant} custom={1}>
