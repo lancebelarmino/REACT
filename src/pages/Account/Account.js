@@ -22,7 +22,7 @@ const Account = () => {
   const { classes } = useStyles();
 
   const row2 = [
-    { icon: Gains, title: 'Realized Gains', label: `${walletData.gains} AVAX`, value: `$ ${walletData.gainsInUsd}` },
+    { icon: Gains, title: 'Claimed Rewards', label: `${walletData.gains} AVAX`, value: `$ ${walletData.gainsInUsd}` },
     { icon: Rewards, title: 'Pending Rewards', label: `${walletData.rewards} AVAX`, value: `$ ${walletData.rewardsInUsd}` },
   ];
 
@@ -115,7 +115,7 @@ const Account = () => {
           <Card>
             <Image className={classes.cardActionImage} src={avalanche} width={60} height={60} />
             <Button className={classes.btn} onClick={claimPendingRewards} fullWidth>
-              Claim
+              Claim Pending Rewards
             </Button>
           </Card>
           {/* <Card>
