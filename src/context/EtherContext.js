@@ -23,6 +23,8 @@ const defaultWalletData = {
   rewardsInUsd: 0,
   isClaimed: false,
   isCompounded: false,
+  isLocked: false,
+  time: 0,
 };
 
 export const EtherContextProvider = ({ children }) => {
@@ -183,19 +185,35 @@ export const EtherContextProvider = ({ children }) => {
     }
   };
 
-  // const lockTokens = async (amount, days) => {
-  //   const daysInSeconds = days * 86400; //86400 seconds per day
-  //   let signer = this.procMetamask();
-  //   signer.signMessage('Lock Tokens');
-  //   await reactContract.lockInitialTokens(amount, daysInSeconds);
-  // };
+  const lockTokens = async (amount, days) => {
+    try {
+      let metamask = await procMetamask();
+      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, metamask.signer);
+      const daysInSeconds = days * 86400;
 
-  // const getRemainingTokenLockTime = async (address) => {
-  //   const seconds = reactContract.getRemainingTokenLockTime(address);
-  //   if (seconds > 86400) {
-  //     const daysInSeconds = seconds / 86400;
-  //   }
-  // };
+      if (metamask.networkId !== 43114) {
+        const error = { id: 'network', error: 'Not in correct network' };
+        throw error;
+      }
+
+      metamask.signer.signMessage('Lock Tokens');
+      await react.lockInitialTokens(amount, daysInSeconds);
+
+      const time = await getRemainingTokenLockTime();
+
+      setWalletData((prevData) => ({ ...prevData, time, isLocked: true }));
+    } catch (error) {
+      if (error.id === 'network') {
+        setError({ title: 'Wrong Network', description: error.error });
+        return;
+      }
+    }
+  };
+
+  const getRemainingTokenLockTime = useCallback(async () => {
+    const seconds = await reactContract.getRemainingTokenLockTime(user);
+    return seconds * 1 * 1000;
+  }, [reactContract, user]);
 
   const connectWallet = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
@@ -214,16 +232,19 @@ export const EtherContextProvider = ({ children }) => {
     const gainsInUsd = (gains * dashboardData.avaxPrice).toFixed(3);
     const rewards = await getPendingRewards(user);
     const rewardsInUsd = (rewards * dashboardData.avaxPrice).toFixed(3);
+    const time = await getRemainingTokenLockTime(user);
 
     setWalletData((prevData) => ({
+      ...prevData,
       balance,
       balanceInUsd,
       gains,
       gainsInUsd,
       rewards,
       rewardsInUsd,
+      time,
     }));
-  }, [getAccountBalance, getUserRealizedGains, getPendingRewards, user, dashboardData.price, dashboardData.avaxPrice]);
+  }, [getAccountBalance, getUserRealizedGains, getPendingRewards, user, dashboardData.price, dashboardData.avaxPrice, getRemainingTokenLockTime]);
 
   // On page load
   const fetchData = useCallback(async () => {
@@ -263,6 +284,7 @@ export const EtherContextProvider = ({ children }) => {
         setIsLoading,
         error,
         setError,
+        lockTokens,
       }}>
       {children}
     </EtherContext.Provider>

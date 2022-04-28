@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Navbar as Nav, Group, Anchor, Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { motion, AnimatePresence } from 'framer-motion';
+import { linkVariant, mobileLinkVariant } from '../../utils/framer-variants';
 import { ReactComponent as Logo } from '../../assets/nav-logo.svg';
 import { ReactComponent as Home } from '../../assets/nav-home.svg';
 import { ReactComponent as Dashboard } from '../../assets/nav-dashboard.svg';
@@ -20,61 +21,11 @@ const menu = [
   { icon: Dashboard, label: 'Dashboard', link: '/dashboard' },
   { icon: Account, label: 'Account', link: '/account' },
   { icon: Calculator, label: 'Calculator', link: '/calculator', isComingSoon: true },
-  { icon: LockedStaking, label: 'Locked Staking', link: '/locked-staking', isComingSoon: true },
+  { icon: LockedStaking, label: 'Locked Staking', link: '/locked-staking' },
   { icon: Lottery, label: 'Lottery', link: '/lottery', isComingSoon: true },
   { icon: Swap, label: 'Swap', link: 'https://traderjoexyz.com/trade?outputCurrency=0xd33df97747dD6bEcAD26B2e61F818c94B7588E69#/', isExternal: true },
   { icon: Whitepaper, label: 'Whitepaper', link: 'https://rebase-aggregator-capital.gitbook.io/rebase-aggregator-capital/', isExternal: true },
 ];
-
-const linkVariant = {
-  hidden: {
-    opacity: 0,
-  },
-
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.2,
-      delay: 0.06,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-};
-
-const mobileLinkVariant = {
-  hidden: {
-    opacity: 0,
-    y: -4,
-  },
-
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.4,
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    y: -4,
-    transition: {
-      ease: 'easeInOut',
-      duration: 0.3,
-    },
-  },
-};
 
 const Navbar = () => {
   const location = useLocation();

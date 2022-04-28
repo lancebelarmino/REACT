@@ -27,7 +27,7 @@ const useStyles = createStyles((theme) => ({
 
     [theme.fn.smallerThan('md')]: {
       minHeight: 'calc(100vh - 100px)',
-      padding: '2.5rem 2.5rem 0 2.5rem',
+      padding: '2.5rem 2.5rem 6rem 2.5rem',
     },
   },
 
