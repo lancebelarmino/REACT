@@ -11,7 +11,7 @@ import { ReactComponent as Success } from '../../assets/notif-success.svg';
 import { ReactComponent as Error } from '../../assets/notif-error.svg';
 import { ReactComponent as Balance } from '../../assets/calculator-balance.svg';
 import { ReactComponent as Token } from '../../assets/calculator-token.svg';
-import { ReactComponent as Boost } from '../../assets/calculator-boost.svg';
+// import { ReactComponent as Boost } from '../../assets/calculator-boost.svg';
 import { ReactComponent as Time } from '../../assets/calculator-time.svg';
 import gradient6 from '../../assets/gradient-6.png';
 import gradient7 from '../../assets/gradient-7.png';
@@ -19,6 +19,7 @@ import useStyles from './LockedStaking.styles';
 
 const mechanics = [
   'Rewards are in the form of REACT Tokens',
+  'Staked amount must be a whole number',
   'The daily ROI is fixed and flat meaning it does not compound on a daily basis.',
   'Users get their entire locked staking rewards 72 hours after their initial lock time. REACT tokens are directly sent to the user’s wallet.',
   'There is no early exit option as it defeats the purpose of the campaign so consider if you’re holding long term as you need to lock your tokens for the full duration.',
@@ -27,7 +28,7 @@ const mechanics = [
 ];
 
 const LockedStaking = () => {
-  const { walletData, setWalletData, lockTokens, error, setError } = useContext(EtherContext);
+  const { walletData, setWalletData, lockTokens, error, setError, withdrawTokens } = useContext(EtherContext);
   const form = useForm({
     initialValues: {
       amount: 0,
@@ -42,9 +43,9 @@ const LockedStaking = () => {
 
   const row1 = [
     { icon: Balance, title: 'Balance', value: walletData.balance },
-    { icon: Token, title: 'Locked Tokens', value: 0.0 },
-    { icon: Boost, title: 'Boost', value: 0.0 },
-    { icon: Time, title: 'Time Remaining Before Unlock', value: 0.0, isTimer: true },
+    { icon: Token, title: 'Locked Tokens', value: walletData.lockedTokens },
+    // { icon: Boost, title: 'Boost', value: walletData.boost },
+    { icon: Time, title: 'Token Unlocks In', value: 0.0, isTimer: true },
   ];
 
   const row1List = row1.map((item) => (
@@ -61,7 +62,7 @@ const LockedStaking = () => {
   ));
 
   const mechanicsList = mechanics.map((item, index) => (
-    <List.Item id={index} className={classes.listItem}>
+    <List.Item key={index} className={classes.listItem}>
       {item}
     </List.Item>
   ));
@@ -86,7 +87,7 @@ const LockedStaking = () => {
     if (error) {
       let screenTimer = setTimeout(() => {
         setError(null);
-      }, 1500);
+      }, 5000);
 
       return () => {
         clearTimeout(screenTimer);
@@ -101,8 +102,17 @@ const LockedStaking = () => {
           <Notification
             key="claim-success"
             icon={Success}
-            title="Locked Successful"
+            title="Locked Successfully"
             description="You locked REACT tokens."
+            onClose={() => setWalletData((prevData) => ({ ...prevData, isLocked: false }))}
+          />
+        )}
+        {walletData.isLockedTokensClaimed && (
+          <Notification
+            key="claim-success"
+            icon={Success}
+            title="Claimed Successfully"
+            description="You claimed locked REACT tokens."
             onClose={() => setWalletData((prevData) => ({ ...prevData, isLocked: false }))}
           />
         )}
@@ -110,14 +120,7 @@ const LockedStaking = () => {
       </AnimatePresence>
 
       <motion.div className={classes.row} variants={contentVariant} custom={1}>
-        <SimpleGrid
-          className={classes.row}
-          cols={4}
-          spacing={40}
-          breakpoints={[
-            { maxWidth: 1366, cols: 2 },
-            { maxWidth: 768, cols: 1 },
-          ]}>
+        <SimpleGrid className={classes.row} cols={3} spacing={40} breakpoints={[{ maxWidth: 1024, cols: 1 }]}>
           {row1List}
         </SimpleGrid>
       </motion.div>
@@ -137,7 +140,7 @@ const LockedStaking = () => {
                 onBlur={() => form.validateField('amount')}
                 {...form.getInputProps('amount')}
               />
-              <SimpleGrid className={classes.row} cols={2} spacing={40} breakpoints={[{ maxWidth: 768, cols: 1 }]}>
+              <SimpleGrid className={classes.row} cols={3} spacing={40} breakpoints={[{ maxWidth: 1024, cols: 1 }]}>
                 <Button
                   type="submit"
                   className={classes.btn}
@@ -156,8 +159,17 @@ const LockedStaking = () => {
                   fullWidth>
                   30 D
                 </Button>
+                <Button
+                  type="submit"
+                  className={classes.btn}
+                  onClick={() => {
+                    setDays(60);
+                  }}
+                  fullWidth>
+                  60 D
+                </Button>
               </SimpleGrid>
-              <Button className={classes.btn} fullWidth>
+              <Button className={classes.btn} onClick={withdrawTokens} fullWidth>
                 Claim Unlocked Tokens
               </Button>
             </form>

@@ -5,6 +5,10 @@ const useStyles = createStyles((theme) => ({
     fontSize: 32,
     lineHeight: 1.25,
     fontWeight: 700,
+
+    [theme.fn.smallerThan('lg')]: {
+      fontSize: 28,
+    },
   },
 }));
 

@@ -17,6 +17,11 @@ const useStyles = createStyles((theme) => ({
 
   cardStatIcon: {
     marginRight: 20,
+    flexShrink: 0,
+
+    [theme.fn.smallerThan('lg')]: {
+      width: 48,
+    },
   },
 
   cardStatTitle: {
@@ -67,6 +72,10 @@ const useStyles = createStyles((theme) => ({
     overflowX: 'hidden',
     height: 234,
     paddingRight: 20,
+
+    [theme.fn.smallerThan('md')]: {
+      height: 418,
+    },
   },
 
   scrollBackground: {

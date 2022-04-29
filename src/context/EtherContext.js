@@ -21,10 +21,12 @@ const defaultWalletData = {
   gainsInUsd: 0,
   rewards: 0,
   rewardsInUsd: 0,
+  time: 0,
+  lockedTokens: 0,
   isClaimed: false,
   isCompounded: false,
   isLocked: false,
-  time: 0,
+  isLockedTokensClaimed: false,
 };
 
 export const EtherContextProvider = ({ children }) => {
@@ -128,6 +130,28 @@ export const EtherContextProvider = ({ children }) => {
     [reactContract]
   );
 
+  const getRemainingTokenLockTime = useCallback(async () => {
+    const seconds = await reactContract.getRemainingTokenLockTime(user);
+    return seconds * 1 * 1000;
+  }, [reactContract, user]);
+
+  // const getBoost = (seconds) => {
+  //   if (seconds === 1296000000) {
+  //     return 5.25;
+  //   } else if (seconds === 2592000000) {
+  //     return 15;
+  //   } else if (seconds === 5184000000) {
+  //     return 42;
+  //   }
+  // };
+
+  const getLockedTokenAmount = useCallback(async () => {
+    const lockedTokens = await reactContract.getLockedTokenAmount(user);
+    const formatted = tokenFormatEther(lockedTokens);
+    const int = 1000000000000000000n;
+    return (formatted * Number(int)).toFixed(5);
+  }, [reactContract, user]);
+
   const procMetamask = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
     await provider.send('eth_requestAccounts', []);
@@ -196,12 +220,12 @@ export const EtherContextProvider = ({ children }) => {
         throw error;
       }
 
-      metamask.signer.signMessage('Lock Tokens');
       await react.lockInitialTokens(amount, daysInSeconds);
 
       const time = await getRemainingTokenLockTime();
+      const lockedTokens = await getLockedTokenAmount();
 
-      setWalletData((prevData) => ({ ...prevData, time, isLocked: true }));
+      setWalletData((prevData) => ({ ...prevData, time, lockedTokens, isLocked: true }));
     } catch (error) {
       if (error.id === 'network') {
         setError({ title: 'Wrong Network', description: error.error });
@@ -210,10 +234,30 @@ export const EtherContextProvider = ({ children }) => {
     }
   };
 
-  const getRemainingTokenLockTime = useCallback(async () => {
-    const seconds = await reactContract.getRemainingTokenLockTime(user);
-    return seconds * 1 * 1000;
-  }, [reactContract, user]);
+  const withdrawTokens = async (amount, days) => {
+    try {
+      let metamask = await procMetamask();
+      const react = new ethers.Contract('0xd33df97747dD6bEcAD26B2e61F818c94B7588E69', reactAbi, metamask.signer);
+
+      if (metamask.networkId !== 43114) {
+        const error = { id: 'network', error: 'Not in correct network' };
+        throw error;
+      }
+
+      await react.withdrawTokens();
+
+      setWalletData((prevData) => ({ ...prevData, isLockedTokensClaimed: true }));
+    } catch (error) {
+      console.log(error);
+      if (error.id === 'network') {
+        setError({ title: 'Wrong Network', description: error.error });
+        return;
+      } else if (error.data.code === 3) {
+        setError({ title: 'Claim Failed', description: 'Lock has not expired yet' });
+        return;
+      }
+    }
+  };
 
   const connectWallet = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
@@ -233,6 +277,7 @@ export const EtherContextProvider = ({ children }) => {
     const rewards = await getPendingRewards(user);
     const rewardsInUsd = (rewards * dashboardData.avaxPrice).toFixed(3);
     const time = await getRemainingTokenLockTime(user);
+    const lockedTokens = await getLockedTokenAmount();
 
     setWalletData((prevData) => ({
       ...prevData,
@@ -243,8 +288,9 @@ export const EtherContextProvider = ({ children }) => {
       rewards,
       rewardsInUsd,
       time,
+      lockedTokens,
     }));
-  }, [getAccountBalance, getUserRealizedGains, getPendingRewards, user, dashboardData.price, dashboardData.avaxPrice, getRemainingTokenLockTime]);
+  }, [getAccountBalance, getUserRealizedGains, getPendingRewards, user, dashboardData.price, dashboardData.avaxPrice, getRemainingTokenLockTime, getLockedTokenAmount]);
 
   // On page load
   const fetchData = useCallback(async () => {
@@ -285,6 +331,7 @@ export const EtherContextProvider = ({ children }) => {
         error,
         setError,
         lockTokens,
+        withdrawTokens,
       }}>
       {children}
     </EtherContext.Provider>
