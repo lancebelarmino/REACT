@@ -248,7 +248,6 @@ export const EtherContextProvider = ({ children }) => {
 
       setWalletData((prevData) => ({ ...prevData, isLockedTokensClaimed: true }));
     } catch (error) {
-      console.log(error);
       if (error.id === 'network') {
         setError({ title: 'Wrong Network', description: error.error });
         return;

@@ -8,12 +8,11 @@ import Calculator from './pages/Calculator/Calculator';
 import LockedStaking from './pages/LockedStaking/LockedStaking';
 import Lottery from './pages/Lottery/Lottery';
 import theme from './styles/theme';
-import components from './styles/components';
 import global from './styles/global';
 
 function App() {
   return (
-    <MantineProvider theme={theme} styles={components} withNormalizeCSS>
+    <MantineProvider theme={theme} withNormalizeCSS>
       <Global styles={global} />
       <EtherContextProvider>
         <AppSection>
